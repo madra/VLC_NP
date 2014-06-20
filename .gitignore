@@ -1,0 +1,6 @@
+.keys
+*.swp
+*.sh
+*.db
+*.DS_Store
+*.py[cod]
