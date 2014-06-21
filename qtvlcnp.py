@@ -25,6 +25,7 @@ import vlc
 from PyQt4 import QtGui, QtCore
 from TwitterAPI import TwitterAPI
 import thread
+import keys
 
 
 class Player(QtGui.QMainWindow):
@@ -46,7 +47,7 @@ class Player(QtGui.QMainWindow):
         self.isPaused = False
 
         #twitter
-        self.t = TwitterAPI('ir7Qs4XdFtbqbrJCvfRfzg', 'MZ5qwINnGmvOVizDnMFLisFPGNOhT0oHgMqVCJpZ9kw',keys.TOKEN_KEY,keys.TOKEN_ACESS
+        self.t = TwitterAPI('ir7Qs4XdFtbqbrJCvfRfzg', 'MZ5qwINnGmvOVizDnMFLisFPGNOhT0oHgMqVCJpZ9kw',keys.TOKEN_KEY,keys.TOKEN_ACCESS
            )
 
     def cb(self, event):
@@ -121,6 +122,18 @@ class Player(QtGui.QMainWindow):
         filemenu.addSeparator()
         filemenu.addAction(exit)
 
+        open = QtGui.QAction("&Open", self)
+        self.connect(open, QtCore.SIGNAL("triggered()"), self.OpenFolder)
+        exit = QtGui.QAction("&Exit", self)
+        self.connect(exit, QtCore.SIGNAL("triggered()"), sys.exit)
+        menubar = self.menuBar()
+        filemenu = menubar.addMenu("&Folder")
+        filemenu.addAction(open)
+        filemenu.addSeparator()
+        filemenu.addAction(exit)
+
+
+
         self.timer = QtCore.QTimer(self)
         self.timer.setInterval(200)
         self.connect(self.timer, QtCore.SIGNAL("timeout()"),
@@ -148,11 +161,17 @@ class Player(QtGui.QMainWindow):
         self.mediaplayer.stop()
         self.playbutton.setText("Play")
 
+    def OpenFolder(self, foldername=None):
+        if foldername is None:
+            foldername = str(QtGui.QFileDialog.getExistingDirectory(self, "Select Directory"))
+        if not foldername:
+            return
+
     def OpenFile(self, filename=None):
         """Open a media file in a MediaPlayer
         """
         if filename is None:
-            filename = QtGui.QFileDialog.getOpenFileName(self, "Open File", user.home)
+            filename = QtGui.QFileDialog.getOpenFileName(self, "Open File", user.home, "*.mp3 *.mp4")
         if not filename:
             return
 

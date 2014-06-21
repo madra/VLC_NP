@@ -1,4 +1,4 @@
-.keys
+keys.py
 *.swp
 *.sh
 *.db
