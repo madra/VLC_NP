@@ -1,4 +1,5 @@
 VLC #NP Twitter Plugin , Tweet what you are listening to
+---------------------------------------------------------
 
 How
 ----------------
